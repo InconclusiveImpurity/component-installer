@@ -192,6 +192,38 @@ jQuery to *components/myownjquery* rather than *components/jquery*:
 
 Defaults to the package name, without the vendor.
 
+### Processes 
+
+To configure, add and modify existing processes you need to specify __all__.
+
+component-processes __MUST__ be left out or an array of Strings and Objects.
+
+These Strings or Objects __MUST__ follow these rules:
+Strings __MUST__ be the Full Qualified Class Name of the Process (FQCN).
+Objects __MUST__ contain a property called class that contains the FQCN.
+Objects __MAY__ contain a property called options, that __MUST__ be an object.
+Objects __MAY__ contain any property not conflicting with above specification.
+Objects __SHOULD__ contain a description, explaining the behavior or intention.
+
+In this example, we use Objects and Strings alike:
+```
+"component-processes": [
+    {
+        "description": "Copy the assets to the Components directory.",
+        "class": "ComponentInstaller\\Process\\CopyProcess",
+        "options": {
+            "one-option": true,
+            "Another-Option": "Both are ignored"
+        }
+    },
+    "ComponentInstaller\\Process\\RequireJsProcess",
+    "ComponentInstaller\\Process\\RequireCssProcess",
+    "ComponentInstaller\\Process\\BuildJsProcess"
+]
+```
+
+Defaults to run the Tasks in the example above, without any configuration. 
+
 ### RequireJS Configuration
 
 Components can alter how [RequireJS](http://requirejs.org) registers and
@@ -304,6 +336,23 @@ Using `extra` with packages that ship with Component Installer, will override co
     }
 }
 ```
+
+## Default Process implementations
+By default this package ships the following processes. They are 
+all provided in the Namespace "ComponentInstaller\Process"
+
+### CopyProcess
+Process which copies components from their source to the components folder.
+
+### RequireCssProcess
+Builds the require.css file from all Component stylesheets.
+
+### RequireJsProcess
+Builds the require.js configuration
+
+### BuildJsProcess
+Builds all JavaScript Components into one require-built.js. 
+*Note: Should run after RequireJsProcess.*
 
 ## Not Invented Here
 
